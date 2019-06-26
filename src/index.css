@@ -8,3 +8,12 @@
   border: 1px solid black;
   text-align: center;
 }
+
+.boastform {
+  display: inline-block;
+}
+
+.roastform {
+  margin-left: 250px;
+  display: inline-block;
+}

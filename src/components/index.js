@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Input, Button } from "semantic-ui-react";
+import { Input, Button, Form, TextArea } from "semantic-ui-react";
 import List from "./list.js"
 import axios from "axios";
-import { addBoast } from "./action.js";
+
+
 
 
 export default class Boast extends Component {
@@ -18,14 +19,44 @@ export default class Boast extends Component {
     this.loadBoasts();
   }
 
-  handleSubmit = event => {
-    this.props.addBoast({ message: this.state.boasts });
+  handleSubmitBoast = event => {
+      console.log(this.state)
+    fetch('http://localhost:8000/apiBaRs/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ boasts: this.state.boast,
+                roasts: "no roast"})
+    })
+    ;
+  window.location.reload()};
+
+  handleSubmitRoast = event => {
+    console.log(this.state)
+  fetch('http://localhost:8000/apiBaRs/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ boasts: "no boast",
+              roasts: this.state.roast})
+  })
+  ;
+  window.location.reload()};
+
+
+  handleOnChangeBoast = event => {
     this.setState({
-      message: ""
+      boast: event.target.value
     });
   };
 
-  
+  handleOnChangeRoast = event => {
+    this.setState({
+      roast: event.target.value
+    });
+  };
+
+  messagesSortedByDate = (messages) => {
+    return messages.sort((a, b) => b.dateCreated - a.dateCreated).reverse()
+  }
 
   async loadBoasts()
   {
@@ -44,16 +75,31 @@ export default class Boast extends Component {
       <div>
         <h1>Boasts and Roasts</h1>
         <h2>Submit a Boast (Or Roast)</h2>
-        <div className="submitBox">
-            <Input 
-            className="newUserPost"
-            placeholder="Insert a boast or a roast!"
-            onChange={this.handleOnChange} />
-        </div>
-        <Button className="submit-button" onClick={this.handleSubmit} type="submit">
+        <div className="boastform">
+            <Form>
+                <TextArea
+                placeholder="Insert a Boast"
+                onChange={this.handleOnChangeBoast}
+                />
+            </Form>
+        
+        <Button className="submit-button" onClick={this.handleSubmitBoast} type="submit">
             Submit
           </Button>
-    {this.state.boasts.map((message)=>{return <List boasts={message.boasts} roasts={message.roasts}/>})}
+          </div>
+          <div className="roastform">
+          <Form>
+                <TextArea
+                placeholder="Insert a Roast"
+                onChange={this.handleOnChangeRoast}
+                />
+            </Form>
+        
+        <Button className="submit-button" onClick={this.handleSubmitRoast} type="submit">
+            Submit
+          </Button>
+          </div>
+    {this.messagesSortedByDate(this.state.boasts.map((message)=>{return <List boasts={message.boasts} roasts={message.roasts}/>}))}
       </div>
       </React.Fragment>
     )
