@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Input, Button, Form, TextArea } from "semantic-ui-react";
 import List from "./list.js"
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 
 
@@ -72,9 +73,11 @@ export default class Boast extends Component {
   render() {
     return(
         <React.Fragment>
-      <div>
+      <div className="main">
         <h1>Boasts and Roasts</h1>
         <h2>Submit a Boast (Or Roast)</h2>
+        <div className="filters"><Link to="/boasts">Just the boasts</Link></div>
+        <div className="filters"><Link to="/roasts">Just the roasts</Link></div>
         <div className="boastform">
             <Form>
                 <TextArea
